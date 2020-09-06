@@ -3,11 +3,15 @@ using DutchTreat.Data.Entities;
 
 namespace DutchTreat.Data
 {
-  public interface IDutchRepository
-  {
-    IEnumerable<Product> GetAllProducts();
-    IEnumerable<Product> GetProductsByCategory(string category);
+    public interface IDutchRepository
+    {
+        IEnumerable<Product> GetAllProducts();
+        IEnumerable<Product> GetProductsByCategory(string category);
 
-    bool SaveAll();
-  }
+        IEnumerable<Order> GetAllOrders(bool includeItems);
+        Order GetOrderById(int id);
+
+        bool SaveAll();
+        void AddEntity(object model);
+    }
 }
