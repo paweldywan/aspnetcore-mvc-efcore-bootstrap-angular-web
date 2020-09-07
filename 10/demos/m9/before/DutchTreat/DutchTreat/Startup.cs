@@ -22,80 +22,80 @@ using Newtonsoft.Json;
 
 namespace DutchTreat
 {
-  public class Startup
-  {
-    private readonly IConfiguration _config;
-
-    public Startup(IConfiguration config)
+    public class Startup
     {
-      _config = config;
-    }
+        private readonly IConfiguration _config;
 
-    // This method gets called by the runtime. Use this method to add services to the container.
-    // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
-    public void ConfigureServices(IServiceCollection services)
-    {
-      services.AddIdentity<StoreUser, IdentityRole>(cfg =>
-      {
-        cfg.User.RequireUniqueEmail = true;
-      })
-        .AddEntityFrameworkStores<DutchContext>();
-
-      services.AddAuthentication()
-        .AddCookie()
-        .AddJwtBearer(cfg =>
+        public Startup(IConfiguration config)
         {
-          cfg.TokenValidationParameters = new TokenValidationParameters()
-          {
-            ValidIssuer = _config["Tokens:Issuer"],
-            ValidAudience = _config["Tokens:Audience"],
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]))
-          };
+            _config = config;
+        }
 
-        });
+        // This method gets called by the runtime. Use this method to add services to the container.
+        // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        public void ConfigureServices(IServiceCollection services)
+        {
+            services.AddIdentity<StoreUser, IdentityRole>(cfg =>
+            {
+                cfg.User.RequireUniqueEmail = true;
+            })
+              .AddEntityFrameworkStores<DutchContext>();
 
-      services.AddDbContext<DutchContext>(cfg =>
-      {
-        cfg.UseSqlServer(_config.GetConnectionString("DutchConnectionString"));
-      });
+            services.AddAuthentication()
+              .AddCookie()
+              .AddJwtBearer(cfg =>
+              {
+                  cfg.TokenValidationParameters = new TokenValidationParameters()
+                  {
+                      ValidIssuer = _config["Tokens:Issuer"],
+                      ValidAudience = _config["Tokens:Audience"],
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]))
+                  };
 
-      services.AddAutoMapper(Assembly.GetExecutingAssembly());
+              });
 
-      services.AddTransient<DutchSeeder>();
+            services.AddDbContext<DutchContext>(cfg =>
+            {
+                cfg.UseSqlServer(_config.GetConnectionString("DutchConnectionString"));
+            });
 
-      services.AddScoped<IDutchRepository, DutchRepository>();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
-      services.AddTransient<IMailService, NullMailService>();
-      // Support for real mail service
-      
-      services.AddControllersWithViews();
+            services.AddTransient<DutchSeeder>();
 
+            services.AddScoped<IDutchRepository, DutchRepository>();
+
+            services.AddTransient<IMailService, NullMailService>();
+            // Support for real mail service
+
+            services.AddControllersWithViews();
+
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        {
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+            }
+
+            app.UseHttpsRedirection();
+            app.UseStaticFiles();
+            app.UseNodeModules();
+
+            app.UseRouting();
+
+            app.UseAuthentication();
+            app.UseAuthorization();
+
+            app.UseEndpoints(cfg =>
+            {
+                cfg.MapControllerRoute("Default",
+                "{controller}/{action}/{id?}",
+                new { controller = "App", Action = "Index" });
+            });
+
+        }
     }
-
-    // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-    public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-      if (env.IsDevelopment())
-      {
-        app.UseDeveloperExceptionPage();
-      }
-
-      app.UseHttpsRedirection();
-      app.UseStaticFiles();
-      app.UseNodeModules();
-
-      app.UseRouting();
-      
-      app.UseAuthentication();
-      app.UseAuthorization();
-
-      app.UseEndpoints(cfg =>
-      {
-        cfg.MapControllerRoute("Default",
-              "{controller}/{action}/{id?}",
-              new { controller = "App", Action = "Index" });
-      });
-
-    }
-  }
 }
