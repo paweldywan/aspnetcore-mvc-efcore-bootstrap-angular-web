@@ -1,4 +1,4 @@
 ﻿
 
-let shopper = new StoreCustomer("Shawn", "Wildermuth");
+const shopper = new StoreCustomer("Shawn", "Wildermuth");
 shopper.showName(); 

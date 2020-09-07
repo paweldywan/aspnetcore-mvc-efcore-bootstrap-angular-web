@@ -2,6 +2,7 @@ var StoreCustomer = /** @class */ (function () {
     function StoreCustomer(firstName, lastName) {
         this.firstName = firstName;
         this.lastName = lastName;
+        //public visits:number = 0;
         this.visits = 0;
     }
     StoreCustomer.prototype.showName = function () {
@@ -19,4 +20,6 @@ var StoreCustomer = /** @class */ (function () {
     });
     return StoreCustomer;
 }());
+//const cust = new StoreCustomer();
+//cust.visits = 0;
 //# sourceMappingURL=storecustomer.js.map
