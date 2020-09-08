@@ -3,7 +3,7 @@
     "Favorite": "blue"
   },
   "ConnectionStrings": {
-    "DutchConnectionString": "server=(localdb)\\ProjectsV13;Database=DutchTreatDb;Integrated Security=true;MultipleActiveResultSets=true;"
+    "DutchConnectionString": "server=(localdb)\\mssqllocaldb;Database=DutchTreatDb;Integrated Security=true;MultipleActiveResultSets=true;"
   },
   "Logging": {
     "LogLevel": {
@@ -16,5 +16,5 @@
     "Issuer": "http://localhost:8888",
     "Audience": "users"
   }
-    
+
 }
