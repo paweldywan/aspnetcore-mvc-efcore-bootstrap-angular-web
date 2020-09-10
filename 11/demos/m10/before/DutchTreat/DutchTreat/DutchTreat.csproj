@@ -14,10 +14,19 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
-    <PackageReference Include="OdeToCode.UseNodeModules" Version="3.0.0" />     
+    <PackageReference Include="OdeToCode.UseNodeModules" Version="3.0.0" />
   </ItemGroup>
 
+  <Target Name="MyPublishScripts" BeforeTargets="BeforePublish">
+    <Exec Command="npm install" />
+    <Exec Command="gulp" />
+    <Exec Command="ng build" />
+  </Target>
 
-  <ProjectExtensions><VisualStudio><UserProperties NpmRestoreOnPackageJsonSave="True" /></VisualStudio></ProjectExtensions>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties NpmRestoreOnPackageJsonSave="True" />
+    </VisualStudio>
+  </ProjectExtensions>
 
 </Project>
